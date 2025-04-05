@@ -41,13 +41,12 @@ func Fatal() {
 }
 func ErrorLadder(err error) {
 	i := 0
-	fmt.Printf("%s%s\n", format(RED, "error"), err)
+	fmt.Printf("%s %s\n", format(RED, "error"), err)
 	for err != nil {
 		prefix := ""
 		if i > 0 {
 			prefix = fmt.Sprintf("  %s↳ ", string(make([]byte, i*2)))
 		}
-		fmt.Printf("%s[%d] %T: %v\n", prefix, i, err, err)
 		i++
 		err = errors.Unwrap(err)
 	}
