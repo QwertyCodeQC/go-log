@@ -40,14 +40,20 @@ func Fatal() {
 	fmt.Println(format(RED, "fatal"))
 }
 func ErrorLadder(err error) {
-	i := 0
-	fmt.Printf("%s %s\n", format(RED, "error"), err)
-	for err != nil {
-		prefix := ""
-		if i > 0 {
-			prefix = fmt.Sprintf("  %s↳ ", string(make([]byte, i*2)))
-		}
+	if err == nil {
+		return
+	}
+
+	fmt.Printf("%s%s\n", format(RED, "error: "), err) // print main error once
+
+	unwrapped := errors.Unwrap(err)
+	i := 1
+
+	for unwrapped != nil {
+		prefix := fmt.Sprintf("  %s↳ ", string(make([]byte, i*2)))
+		fmt.Printf("%s[%d] %T: %v\n", prefix, i, unwrapped, unwrapped)
+		unwrapped = errors.Unwrap(unwrapped)
 		i++
-		err = errors.Unwrap(err)
 	}
 }
+
