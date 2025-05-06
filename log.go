@@ -19,7 +19,7 @@ const REVERSED = "\033[7m"
 const BLACK = "\033[30m"
 const GRAY = "\033[90m"
 func format(color string, msgType string) string {
-	return fmt.Sprintf("%s%s:%s", color, msgType, RESET)
+	return fmt.Sprintf("%s[%s]%s", color, msgType, RESET)
 }
 func Info() {
 	fmt.Println(format(GREEN, "info"))
