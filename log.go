@@ -3,48 +3,43 @@ package golog
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
-const RED = "\033[31m"
-const GREEN = "\033[32m"
-const YELLOW = "\033[33m"
-const BLUE = "\033[34m"
-const MAGENTA = "\033[35m"
-const CYAN = "\033[36m"
-const WHITE = "\033[37m"
-const RESET = "\033[0m"
-const BOLD = "\033[1m"
-const UNDERLINE = "\033[4m"
-const REVERSED = "\033[7m"
-const BLACK = "\033[30m"
-const GRAY = "\033[90m"
+const red = "\033[31m"
+const green = "\033[32m"
+const yellow = "\033[33m"
+const blue = "\033[34m"
+const reset = "\033[0m"
+
 func format(color string, msgType string) string {
-	return fmt.Sprintf("%s%s:%s", color, msgType, RESET)
+	return fmt.Sprintf("%s[%s]%s", color, strings.ToUpper(msgType), reset)
 }
-func Info() {
-	fmt.Println(format(GREEN, "info"))
-}
-
-func Error() {
-	fmt.Println(format(RED, "error"))
+func Info(msg string) {
+	fmt.Printf("%s %s\n", format(green, "info"), msg)
 }
 
-func Debug() {
-	fmt.Println(format(BLUE, "debug"))
+func Error(msg string) {
+	fmt.Printf("%s %s\n", format(red, "error"), msg)
 }
 
-func Warn() {
-	fmt.Println(format(YELLOW, "warn"))
+func Debug(msg string) {
+	fmt.Printf("%s %s\n", format(blue, "debug"), msg)
 }
-func Fatal() {
-	fmt.Println(format(RED, "fatal"))
+
+func Warn(msg string) {
+	fmt.Printf("%s %s\n", format(yellow, "warn"), msg)
+}
+
+func Fatal(msg string) {
+	fmt.Printf("%s %s\n", format(red, "fatal"), msg)
 }
 func ErrorLadder(err error) {
 	if err == nil {
 		return
 	}
 
-	fmt.Printf("%s%s\n", format(RED, "error: "), err) // print main error once
+	fmt.Printf("%s%s\n", format(red, "error: "), err) // print main error once
 
 	unwrapped := errors.Unwrap(err)
 	i := 1
@@ -56,4 +51,3 @@ func ErrorLadder(err error) {
 		i++
 	}
 }
-
